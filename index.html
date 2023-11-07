@@ -1,0 +1,170 @@
+﻿<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>File Storage Example</title>
+</head>
+<body>
+    <link rel="stylesheet" href="styles.css" />
+
+    <p class="centerP">
+        This is a test, it should save a JSON file to the server with the name of the ID typed in the box below
+    </p>
+    <br />
+    <p class="centerP">
+      <!-- Input box to enter user data -->
+      <input type="text" id="userInput" placeholder="Enter your data">
+
+      <!-- Button to save the data to local storage -->
+      <button onclick="saveToLocalStorage()">Set ID</button>
+
+      <button onclick="complete()">Save to Server</button>
+
+      <!-- Display area for the saved data -->
+      <div id="output"></div>
+    </p>
+
+</body>
+</html>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+  var today = new Date();
+  localStorage.finalEnd = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+  var output = {}
+  output.finalEnd = localStorage.finalEnd
+  output.id = "testID"
+  output.testObj = {}
+  output.testObj.testEl = "testEl"
+  // output.id = localStorage.id
+  // output.preQ = {}
+  // output.postQ = {}
+  // output.time = {}
+  //
+  //
+  // output.preQ.age = localStorage.age
+  // output.preQ.CVWeakness = localStorage.CVWeakness
+  // output.preQ.education = localStorage.education
+  // output.from = localStorage.from
+  // output.postQ.comments = localStorage.comments
+  // output.postQ.changesS = localStorage.changesS
+  // output.postQ.weak = localStorage.weak
+  // output.postQ.changes = localStorage.changes
+  // output.time.end = localStorage.endTime
+  // output.preQ.gender = localStorage.gender
+  // output.intCond = localStorage.intCond
+  // output.midQs = localStorage.midQs
+  // output.preQ.MLExp = localStorage.MLExp
+  // output.ordCond = localStorage.ordCond
+  // output.pAns = localStorage.pAns
+  // output.time.start = localStorage.startTime
+  // output.time.firstE = localStorage.time0
+  // output.time.secondE = localStorage.time1
+  // output.time.thirdE = localStorage.time2
+  // output.time.firstS = localStorage.timeStart0
+  // output.time.secondS = localStorage.timeStart1
+  // output.time.thirdS = localStorage.timeStart2
+  // output.time.tutBegin = localStorage.tutBegin
+  // output.time.finalEnd = localStorage.finalEnd
+  // output.trust1 = localStorage.trust1
+  // output.trust2 = localStorage.trust2
+  // output.trust3 = localStorage.trust3
+  // output.trustUses = localStorage.trustUses
+
+  // IDBox = document.getElementById("output")
+  // IDBox.value = output.id
+
+  function saveToLocalStorage() {
+    // Get the user input
+    var userInput = document.getElementById("userInput").value;
+
+    // Check if the user input is not empty
+    if (userInput.trim() !== "") {
+        // Save the user input to local storage with a key "userData"
+        localStorage.setItem("userData", userInput);
+
+        // Display the saved data
+        document.getElementById("output").innerText = "Saved data: " + userInput;
+    } else {
+        alert("Please enter some data before saving.");
+    }
+  }
+
+  function copy() {
+    IDBox.select()
+    document.execCommand('copy')
+  }
+
+  //continueBtn.style.background = "#A9A9A9";
+
+  //Handle sliders
+  //var slider1 = document.getElementById("q1");
+  //slider1.value = 50
+  //var output1 = document.getElementById("q1Val");
+  //output1.innerHTML = "??"; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  //slider1.onclick = function() {
+  //  output1.innerHTML = this.value;
+  //  slider1.className = "sliderA"
+  //  continueBtn.style.background = "#4CAF50"
+  //  answered = 1
+  //}
+
+
+  //Setup timer to simulate the system implementing the responses
+  //implementing = false
+  //if(parseInt(localStorage.intCond) > 0) {
+  //  implementing = true
+  //  setTimeout(delayContinue, 60000)  //1 minute delay
+
+  //  //Setup rotating gear icon
+  //  i = 1;
+  //  setInterval(turnGear, 500)
+  //}
+  //else {
+  //  document.getElementById("gear").style.display = "none"
+  //}
+  //Questionnaire completion check
+  const isComplete = (currentValue) => currentValue == 1
+
+
+  function submit() {
+    weak = document.getElementById("weak").value
+    comments = document.getElementById("comments").value
+    answered = 1
+
+    if (weak == "") {
+        answered = 0
+    }
+    if (comments == "") {
+        answered = 0
+    }
+    if (answered == 0) {
+      alert("You must answer all questions before continuing")
+    }
+    else {
+        localStorage.weak = JSON.stringify(weak)
+        localStorage.comments = JSON.stringify(comments)
+        complete()
+        //window.location.href = "binaryInteraction.html"
+
+    }
+  }
+
+  function complete() {
+    //TODO: Output values to json file
+    $.ajax({
+      type : "POST",
+      url : "json.php",
+      data : {
+          json : JSON.stringify(output)
+      }
+    });
+
+    //TODO: Move to final page (what to put here for AMT/SONA I don't know)
+
+    alert("Done")
+  }
+
+</script>
