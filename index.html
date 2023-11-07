@@ -33,7 +33,6 @@
 
   var output = {}
   output.finalEnd = localStorage.finalEnd
-  output.id = "testID"
   output.testObj = {}
   output.testObj.testEl = "testEl"
   // output.id = localStorage.id
@@ -81,7 +80,8 @@
     // Check if the user input is not empty
     if (userInput.trim() !== "") {
         // Save the user input to local storage with a key "userData"
-        localStorage.setItem("userData", userInput);
+        localStorage.setItem("id", userInput);
+        output.id = userInput
 
         // Display the saved data
         document.getElementById("output").innerText = "Saved data: " + userInput;
